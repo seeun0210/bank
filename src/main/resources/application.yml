@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:mysql://db.bank.orb.local:3306/bank?serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: admin1234
+  jpa:
+    hibernate:
+      ddl-auto: update

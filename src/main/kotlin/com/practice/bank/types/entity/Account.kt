@@ -20,6 +20,8 @@ data class Account (
     val ulid: String,
 
     @ManyToOne(fetch = FetchType.LAZY)
+    //fetchType에 따라서 데이터를 다 가져올 것 인지?
+    //Lazy로 선언하게되면 사용할때만 데이터를 가져오게된다.
     @JoinColumn(name="user_ulid",nullable=false)
     val user: User,
 
