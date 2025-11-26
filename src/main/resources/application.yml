@@ -7,3 +7,15 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+oauth2:
+  providers:
+    google:
+      client-id: sample
+      client-secret: sample
+      redirect-uri: sample
+    github:
+      client-id: sample
+      client-secret: sample
+      redirect-uri: sample
+
