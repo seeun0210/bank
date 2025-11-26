@@ -30,6 +30,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.auth0:java-jwt:3.12.0")
     runtimeOnly("com.mysql:mysql-connector-j")
 }
 
