@@ -27,6 +27,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
     runtimeOnly("com.mysql:mysql-connector-j")
 }
 
