@@ -48,7 +48,9 @@ class AuthService (
         }
 
         return@logFor token
-        //userInfo
+    }
 
+    fun verifyToken(authorization: String){
+        jwtProvider.verifyToken(authorization)
     }
 }

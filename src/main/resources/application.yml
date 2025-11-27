@@ -19,3 +19,6 @@ oauth2:
       client-secret: sample
       redirect-uri: sample
 
+jwt:
+  secret-key: asdfasfdasdfadfasdfasdfafdasfasdfafasfasfasfdasfd
+  time: 1000
