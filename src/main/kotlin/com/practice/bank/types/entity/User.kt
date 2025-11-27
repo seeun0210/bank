@@ -8,14 +8,11 @@ import jakarta.persistence.Table
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 data class User (
     @Id
     @Column(name="ulid", length=26)
     val ulid: String,
-
-    @Column(name="platform", nullable = false, length=25)
-    val platform: String,
 
     @Column(name="username", nullable = false, unique=true, length=50)
     val username: String,
