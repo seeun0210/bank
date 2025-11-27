@@ -1,11 +1,14 @@
 package com.practice.bank.domains.auth.service
 
+import com.github.f4b6a3.ulid.UlidCreator
 import com.practice.bank.common.exception.CustomException
 import com.practice.bank.common.exception.ErrorCode
 import com.practice.bank.common.jwt.JwtProvider
 import com.practice.bank.common.logging.Logging
 import com.practice.bank.common.transaction.Transactional
+import com.practice.bank.domains.auth.repository.AuthUserRepository
 import com.practice.bank.interfaces.OauthServiceInterface
+import com.practice.bank.types.entity.User
 import org.slf4j.Logger
 import org.springframework.stereotype.Service
 
@@ -13,7 +16,8 @@ import org.springframework.stereotype.Service
 class AuthService (
     private val oAuth2Service: Map<String, OauthServiceInterface>,
     private val jwtProvider: JwtProvider,
-    private val transaction: Transactional
+    private val transaction: Transactional,
+    private val authUserRepository: AuthUserRepository
 ){
     private val logger: Logger = Logging.getLogger(AuthService::class.java)
 
@@ -27,10 +31,23 @@ class AuthService (
         val accessToken = callService.getToken(code)
         val userInfo = callService.getUserInfo(accessToken.accessToken)
         val token = jwtProvider.createToken(provider, userInfo.email, userInfo.name, userInfo.id)
+        val username = (userInfo.name?:userInfo.email).toString()
 
-//        transaction.run{
-//
-//        }
+        transaction.run{
+            val exists = authUserRepository.existsByUsername(username)
+
+            if(exists){
+                authUserRepository.updateAccessTokenByUsername(username, token)
+            }else{
+                val ulid = UlidCreator.getUlid().toString()
+
+                val user = User(ulid,username,token)
+
+                authUserRepository.save(user)
+            }
+        }
+
+        return@logFor token
         //userInfo
 
     }
