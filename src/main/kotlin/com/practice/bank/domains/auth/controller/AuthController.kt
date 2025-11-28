@@ -28,7 +28,7 @@ class AuthController(
         response.addCookie(
             Cookie("authToken",token).apply{
                 isHttpOnly=true
-                path="/"
+                path="/" //루트경로로 주어야 cookie가 설정됨
                 maxAge= 60*60*24
             }
         )
