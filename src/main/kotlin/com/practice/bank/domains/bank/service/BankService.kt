@@ -36,7 +36,7 @@ class BankService(
             val account = Account(
                 ulid = ulid,
                 user = user,
-                accountNumber = accountNumber   
+                accountNumber = accountNumber
             )
 
             try{
@@ -75,7 +75,7 @@ class BankService(
             if(account.user.ulid!=userUlid) throw CustomException(ErrorCode.FAILED_TO_FIND_ACCOUNT)
             if(account.balance.compareTo(BigDecimal.ZERO) != 0) throw CustomException(ErrorCode.ACCOUNT_BALANCE_IS_NOT_ZERO)
 
-            val updatedAccount = account.copy(isDeleted = true, deletedAt = LocalDateTime.now(), updatedAt = LocalDateTime.now())
+            account.copy(isDeleted = true, deletedAt = LocalDateTime.now(), updatedAt = LocalDateTime.now())
             ResponseProvider.success("SUCCESS")
 
         }
