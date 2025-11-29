@@ -55,7 +55,7 @@ class RedisConfig {
 
     //분산락 사용을 위한 bean
     @Bean
-    fun redissionClient(@Value("\${database.redisson.host}") host: String,
+    fun redissonClient(@Value("\${database.redisson.host}") host: String,
                         @Value("\${database.redisson.timeout}") timeout: Int,
                         @Value("\${database.redisson.password:${null}") password: String?)
     :RedissonClient{
