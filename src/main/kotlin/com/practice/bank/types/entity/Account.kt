@@ -40,4 +40,7 @@ data class Account (
 
     @Column(name="updated_at", nullable=false)
     var updatedAt: LocalDateTime = LocalDateTime.now(),
+
+    @Column(name="deleted_at", nullable = true)
+    var deletedAt: LocalDateTime? = null
 )
