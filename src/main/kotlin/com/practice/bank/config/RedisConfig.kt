@@ -1,6 +1,7 @@
 package com.practice.bank.config
 
 
+import com.practice.bank.common.cache.RedisClient
 import org.redisson.Redisson
 import org.redisson.api.RedissonClient
 import org.redisson.config.Config
@@ -74,5 +75,13 @@ class RedisConfig {
 
     }
 
+    }
+
+    @Bean
+    fun redisClient(
+        template: RedisTemplate<String, String>,
+        redissonClient: RedissonClient
+    ): RedisClient {
+        return RedisClient(template, redissonClient)
     }
 }

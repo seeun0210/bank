@@ -28,7 +28,7 @@ class BankService(
         log["userUlid"]=userUlid
 
         transaction.run {
-            val user = bankUserRepository.findById(userUlid)
+            val user = bankUserRepository.findByUlid(userUlid)
 
             val ulid = UlidCreator.getUlid().toString()
             val accountNumber = generateRandomAccountNumber()
