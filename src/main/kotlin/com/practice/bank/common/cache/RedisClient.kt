@@ -7,8 +7,8 @@ import org.springframework.data.redis.core.RedisTemplate
 import java.util.concurrent.TimeUnit
 
 class RedisClient (
-    private val template: RedisTemplate<String, String>
-    private val redisson: RedissonClient
+    private val template: RedisTemplate<String, String>,
+    private val redissonClient: RedissonClient
 )
 {
     fun get(key:String):String?{
@@ -25,16 +25,24 @@ class RedisClient (
         return template.opsForValue().setIfAbsent(key,value) == true
     }
 
-    fun <T> invokeWithMutex(key:String, function:()->T?){
-        val lock = redisson.getLock(key)
+    fun <T> invokeWithMutex(key:String, function:()->T?):T? {
+        val lock = redissonClient.getLock(key)
+        var lockAcquired = false
 
         try{
-            lock.lock(15, TimeUnit.SECONDS)
-            function.invoke()
+            lockAcquired = lock.tryLock(10,15, TimeUnit.SECONDS)
+
+            if(!lockAcquired) {
+                throw CustomException(ErrorCode.FAILED_TO_GET_LOCK,key)
+            }
+
+            return function.invoke()
         }catch(e: Exception){
             throw CustomException(ErrorCode.FAILED_TO_MUTEX_INVOKE, key)
         }finally {
-            lock.unlock()
+            if(lockAcquired && lock.isHeldByCurrentThread){
+                lock.unlock()
+            }
         }
     }
 }
