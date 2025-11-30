@@ -7,6 +7,7 @@ import com.practice.bank.common.exception.ErrorCode
 import com.practice.bank.common.logging.Logging
 import com.practice.bank.common.transaction.Transactional
 import com.practice.bank.domains.transactions.model.DepositResponse
+import com.practice.bank.domains.transactions.model.TransferResponse
 import com.practice.bank.domains.transactions.repository.TransactionAccount
 import com.practice.bank.domains.transactions.repository.TransactionUser
 import com.practice.bank.types.dto.Response
@@ -46,6 +47,44 @@ class TransactionService (
                 transactionAccount.save(account)
 
                 ResponseProvider.success(DepositResponse(afterBalance=account.balance))
+            }
+        }
+    }
+
+    fun transfer(fromUlid:String, fromAccountId:String, toAccountId:String, value: BigDecimal): Response<TransferResponse>
+    =Logging.logFor(logger){it
+        it["fromUlid"] = fromUlid
+        it["fromAccountId"] = fromAccountId
+        it["toUlid"] = toAccountId
+        it["value"] = value
+
+        val key = RedisKeyProvider.bankMutexKey(fromUlid,fromAccountId)
+
+        return@logFor redisClient.invokeWithMutex(key){
+            return@invokeWithMutex transactional.run{
+                val fromAccount = transactionAccount.findByUlid(fromAccountId)
+                    ?:throw CustomException(ErrorCode.FAILED_TO_FIND_ACCOUNT)
+
+                val toAccount = transactionAccount.findByUlid(toAccountId)
+                    ?:throw CustomException(ErrorCode.FAILED_TO_FIND_ACCOUNT)
+
+                if(fromAccount.user.ulid != fromUlid){
+
+                }
+                else if (fromAccount.balance < value) {
+
+                }
+                else if (value <= BigDecimal.ZERO){
+
+                }
+
+                fromAccount.balance = fromAccount.balance.subtract(value)
+                toAccount.balance = toAccount.balance.add(value)
+
+                transactionAccount.save(fromAccount)
+                transactionAccount.save(fromAccount)
+
+                ResponseProvider.success(TransferResponse(afterFromBalance=fromAccount.balance, afterToBalance=toAccount.balance))
             }
         }
     }
