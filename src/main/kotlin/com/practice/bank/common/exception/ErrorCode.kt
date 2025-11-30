@@ -22,4 +22,7 @@ enum class ErrorCode(
     ACCOUNT_BALANCE_IS_NOT_ZERO(-110, "account balance is not zero"),
     FAILED_TO_MUTEX_INVOKE(-111,"failed to mute"),
     FAILED_TO_GET_LOCK(-112,"failed to get lock"),
+    FAILED_T0_MATCH_ACCOUNT_ID (-113,"failed to match account"),
+    ENOUGH_VALUE(-114,"enough value"),
+    VALUE_MUST_NOT_BE_UNDER_ZERO(-115,"value must be under zero"),
 }

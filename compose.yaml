@@ -4,3 +4,9 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: admin1234
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"

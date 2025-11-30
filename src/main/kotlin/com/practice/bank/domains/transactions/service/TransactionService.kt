@@ -69,13 +69,13 @@ class TransactionService (
                     ?:throw CustomException(ErrorCode.FAILED_TO_FIND_ACCOUNT)
 
                 if(fromAccount.user.ulid != fromUlid){
-
+                    throw CustomException(ErrorCode.MISS_MATCH_ACCOUNT_ULID_AND_USER_ULID)
                 }
                 else if (fromAccount.balance < value) {
-
+                    throw CustomException(ErrorCode.ENOUGH_VALUE)
                 }
                 else if (value <= BigDecimal.ZERO){
-
+                    throw CustomException(ErrorCode.VALUE_MUST_NOT_BE_UNDER_ZERO)
                 }
 
                 fromAccount.balance = fromAccount.balance.subtract(value)
